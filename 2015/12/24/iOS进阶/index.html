@@ -36,7 +36,7 @@
 在通常的函数内,通常是使用一个临时的对象,是不需要修改它的引用计数的,只需要在函数返回前将对象销毁就可以了.
 引用计数真正派上用场,是在面向对象的程序设计架构中,用于对象之间传递和共享数据.
 123NSObject *obj = [NSO">
-<meta property="og:updated_time" content="2017-03-06T13:12:22.000Z">
+<meta property="og:updated_time" content="2017-03-06T13:13:55.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS进阶">
 <meta name="twitter:description" content="工具介绍开发实践内存管理现在都是arc,想看非arc情况,给对应编译文件添加编译参数 -fno-objc-arc开启手动管理引用计数模式
@@ -101,6 +101,7 @@
 <p>在通常的函数内,通常是使用一个临时的对象,是不需要修改它的引用计数的<br>,只需要在函数返回前将对象销毁就可以了.</p>
 <p>引用计数真正派上用场,是在面向对象的程序设计架构中,用于对象之间传递和共享数据.</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">NSObject *obj = [NSObject alloc]init];</div><div class="line">[obj release];</div><div class="line">//打印 obj的retaincount 会发现还是1 为什么不是0呢?因为马上就要被回收了,改变这个值没什么意义,而且减少一次对内存的操作,加速对象的回收</div></pre></td></tr></table></figure>
+<a id="more"></a>
 <blockquote>
 <p>循环引用的问题 reference cycles</p>
 </blockquote>
