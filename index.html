@@ -134,7 +134,7 @@
   <header>
     
       <div class="icon"></div>
-      <a href="/2015/12/24/#我的阅读# iOS进阶/">
+      <a href="/2015/12/24/<我的阅读>iOS基础开发教材/">
   <time datetime="2015-12-24T09:51:07.000Z">
     2015-12-24
   </time>
@@ -142,85 +142,7 @@
     
     
   
-    <h1 class="title"><a href="/2015/12/24/#我的阅读# iOS进阶/"></a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <h3 id="工具介绍"><a href="#工具介绍" class="headerlink" title="工具介绍"></a>工具介绍</h3><h3 id="开发实践"><a href="#开发实践" class="headerlink" title="开发实践"></a>开发实践</h3><h4 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h4><p>现在都是arc,想看非arc情况,给对应编译文件添加编译参数 -fno-objc-arc<br>开启手动管理引用计数模式</p>
-<blockquote>
-<p>为什么需要引用计数</p>
-</blockquote>
-<p>在通常的函数内,通常是使用一个临时的对象,是不需要修改它的引用计数的<br>,只需要在函数返回前将对象销毁就可以了.</p>
-<p>引用计数真正派上用场,是在面向对象的程序设计架构中,用于对象之间传递和共享数据.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">NSObject *obj = [NSObject alloc]init];</div><div class="line">[obj release];</div><div class="line">//打印 obj的retaincount 会发现还是1 为什么不是0呢?因为马上就要被回收了,改变这个值没什么意义,而且减少一次对内存的操作,加速对象的回收</div></pre></td></tr></table></figure>
-<blockquote>
-<p>循环引用的问题 reference cycles</p>
-</blockquote>
-<p>引用计数这种内存管理方式虽然简单,但是有一个比较大的瑕疵,不能很好地解决循环引用的问题</p>
-<p>例:对象a和b相互引用了对方作为自己的成员变量,只有当自己销毁时,才能将成员变脸的引用计数减1.而对象a的销毁依赖于对象b的销毁,对象b的销毁又依赖于a的销毁,就造成了循环引用的问题,即使外界没有任何指针能够访问他们了,他们也无法被释放.</p>
-<p>不止两个对象,多个对象更容易形成环状.</p>
-<p>解决循环引用的问题,一种是手动发现这个循环引用,主动把这个环断开,这又回到了”谁申请谁释放”的内存管理时代,这种方法要求比较高,需要知道在什么时候断开循环引用回收内存,这种方法并不常用,更常见的是使用弱引用的方法.</p>
-<p>若引用虽然持有对象,但是并不增加引用计数,这样就避免了循环引用的产生</p>
-<p>弱引用通常用在delegate中.</p>
-<p>使用xcode检测循环引用.<br>循环引用的代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">NSMutableArray *first = [NSMutableArray array];</div><div class="line">NSMutableArray *second = [NSMutableArray array];</div><div class="line">[first addObject:second];</div><div class="line">[second addObject:first];</div></pre></td></tr></table></figure>
-<p>product-profile-leaks-cycles/root</p>
-<blockquote>
-<p>ARC<br>有两种疑惑:</p>
-<ol>
-<li>从MRC过来的老一代iOS开发程序员,对ARC持怀疑态度,不敢用</li>
-<li>11年之后,从ARC开始学习的新手,完全不知道引用计数是啥,对ARC有很强的依赖,但不知道ARC内部的原理</li>
-</ol>
-<p>Core Foundation对象的内存管理</p>
-</blockquote>
-<p>底层的Core Foundation对象,大多以XxxCreateWithXxx的方式创建</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">创建一个string对象</div><div class="line"></div><div class="line">CFStringRef str = CFStringCreateWithCFString(..);</div><div class="line"></div><div class="line">创建一个CFFontRef对象</div><div class="line"></div><div class="line">CFFontRef fontRef = CFFontCreateWithName(...);</div></pre></td></tr></table></figure>
-<p>CFRetain ,CFRelease 方法,对应Objective-C的retain, release方法<br>所以对于底层的Core Foundation对象,只需要延续以前的手工管理引用计数的方法就可以了</p>
-<p>Core Foundation与Objective-C对象相互转换的问题,告诉编译器,转换的过程中,引用计数如何调整.</p>
-<ul>
-<li>_bridge只做类型转换,不修改相关对象的引用计数</li>
-<li>_bridge_retained,类型转换后,引用计数加1</li>
-<li>_bridge_transfer,类型转换后,将该对象的引用计数交给ARC管理</li>
-</ul>
-<h3 id="iOS开发底层原理"><a href="#iOS开发底层原理" class="headerlink" title="iOS开发底层原理"></a>iOS开发底层原理</h3><h4 id="Objective-C对象模型"><a href="#Objective-C对象模型" class="headerlink" title="Objective-C对象模型"></a>Objective-C对象模型</h4><blockquote>
-<p>isa指针</p>
-</blockquote>
-<p>可以通过cmd+shift+o快捷键查看NSObject, objc.h和runtime的头文件查看相应的代码结构</p>
-<p>NSObject就是一个包含isa指针的结构体</p>
-<p>每一个类实际上也是一个对象,也有一个名为isa的指针</p>
-<p>因为类是一个对象,所以它必须是另一个类的实例,这个类就是元类(metaclass)</p>
-<p>元类保存了类方法的列表,当一个类方法被调用时,元类会首先查找它自己本身是否有该类方法的实现,如果没有,该元类会向它的父类查找,一直找到继承链的头</p>
-<p>元类也是一个对象,那么元类的isa指针又指向哪呢?为了设计上的完整,所有元类的isa指针都会指向一个根元类(root metaclass).根元类的isa指针指向自己,这样就形成了一个闭环</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2015/12/24/#我的阅读# iOS基础开发教材/">
-  <time datetime="2015-12-24T09:51:07.000Z">
-    2015-12-24
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2015/12/24/#我的阅读# iOS基础开发教材/"></a></h1>
+    <h1 class="title"><a href="/2015/12/24/<我的阅读>iOS基础开发教材/">&lt;我的阅读&gt;iOS基础开发教材</a></h1>
   
 
   </header>
@@ -334,6 +256,84 @@
 </ol>
 <p>draw rect 其实是个delegate call 用途不是绘制uiview 而是绘制calayer的内容</p>
 <p>重绘calayer时候 会呼叫calayer 的drawInContext</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/12/24/#我的阅读# iOS进阶/">
+  <time datetime="2015-12-24T09:51:07.000Z">
+    2015-12-24
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/12/24/#我的阅读# iOS进阶/"></a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h3 id="工具介绍"><a href="#工具介绍" class="headerlink" title="工具介绍"></a>工具介绍</h3><h3 id="开发实践"><a href="#开发实践" class="headerlink" title="开发实践"></a>开发实践</h3><h4 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h4><p>现在都是arc,想看非arc情况,给对应编译文件添加编译参数 -fno-objc-arc<br>开启手动管理引用计数模式</p>
+<blockquote>
+<p>为什么需要引用计数</p>
+</blockquote>
+<p>在通常的函数内,通常是使用一个临时的对象,是不需要修改它的引用计数的<br>,只需要在函数返回前将对象销毁就可以了.</p>
+<p>引用计数真正派上用场,是在面向对象的程序设计架构中,用于对象之间传递和共享数据.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">NSObject *obj = [NSObject alloc]init];</div><div class="line">[obj release];</div><div class="line">//打印 obj的retaincount 会发现还是1 为什么不是0呢?因为马上就要被回收了,改变这个值没什么意义,而且减少一次对内存的操作,加速对象的回收</div></pre></td></tr></table></figure>
+<blockquote>
+<p>循环引用的问题 reference cycles</p>
+</blockquote>
+<p>引用计数这种内存管理方式虽然简单,但是有一个比较大的瑕疵,不能很好地解决循环引用的问题</p>
+<p>例:对象a和b相互引用了对方作为自己的成员变量,只有当自己销毁时,才能将成员变脸的引用计数减1.而对象a的销毁依赖于对象b的销毁,对象b的销毁又依赖于a的销毁,就造成了循环引用的问题,即使外界没有任何指针能够访问他们了,他们也无法被释放.</p>
+<p>不止两个对象,多个对象更容易形成环状.</p>
+<p>解决循环引用的问题,一种是手动发现这个循环引用,主动把这个环断开,这又回到了”谁申请谁释放”的内存管理时代,这种方法要求比较高,需要知道在什么时候断开循环引用回收内存,这种方法并不常用,更常见的是使用弱引用的方法.</p>
+<p>若引用虽然持有对象,但是并不增加引用计数,这样就避免了循环引用的产生</p>
+<p>弱引用通常用在delegate中.</p>
+<p>使用xcode检测循环引用.<br>循环引用的代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">NSMutableArray *first = [NSMutableArray array];</div><div class="line">NSMutableArray *second = [NSMutableArray array];</div><div class="line">[first addObject:second];</div><div class="line">[second addObject:first];</div></pre></td></tr></table></figure>
+<p>product-profile-leaks-cycles/root</p>
+<blockquote>
+<p>ARC<br>有两种疑惑:</p>
+<ol>
+<li>从MRC过来的老一代iOS开发程序员,对ARC持怀疑态度,不敢用</li>
+<li>11年之后,从ARC开始学习的新手,完全不知道引用计数是啥,对ARC有很强的依赖,但不知道ARC内部的原理</li>
+</ol>
+<p>Core Foundation对象的内存管理</p>
+</blockquote>
+<p>底层的Core Foundation对象,大多以XxxCreateWithXxx的方式创建</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">创建一个string对象</div><div class="line"></div><div class="line">CFStringRef str = CFStringCreateWithCFString(..);</div><div class="line"></div><div class="line">创建一个CFFontRef对象</div><div class="line"></div><div class="line">CFFontRef fontRef = CFFontCreateWithName(...);</div></pre></td></tr></table></figure>
+<p>CFRetain ,CFRelease 方法,对应Objective-C的retain, release方法<br>所以对于底层的Core Foundation对象,只需要延续以前的手工管理引用计数的方法就可以了</p>
+<p>Core Foundation与Objective-C对象相互转换的问题,告诉编译器,转换的过程中,引用计数如何调整.</p>
+<ul>
+<li>_bridge只做类型转换,不修改相关对象的引用计数</li>
+<li>_bridge_retained,类型转换后,引用计数加1</li>
+<li>_bridge_transfer,类型转换后,将该对象的引用计数交给ARC管理</li>
+</ul>
+<h3 id="iOS开发底层原理"><a href="#iOS开发底层原理" class="headerlink" title="iOS开发底层原理"></a>iOS开发底层原理</h3><h4 id="Objective-C对象模型"><a href="#Objective-C对象模型" class="headerlink" title="Objective-C对象模型"></a>Objective-C对象模型</h4><blockquote>
+<p>isa指针</p>
+</blockquote>
+<p>可以通过cmd+shift+o快捷键查看NSObject, objc.h和runtime的头文件查看相应的代码结构</p>
+<p>NSObject就是一个包含isa指针的结构体</p>
+<p>每一个类实际上也是一个对象,也有一个名为isa的指针</p>
+<p>因为类是一个对象,所以它必须是另一个类的实例,这个类就是元类(metaclass)</p>
+<p>元类保存了类方法的列表,当一个类方法被调用时,元类会首先查找它自己本身是否有该类方法的实现,如果没有,该元类会向它的父类查找,一直找到继承链的头</p>
+<p>元类也是一个对象,那么元类的isa指针又指向哪呢?为了设计上的完整,所有元类的isa指针都会指向一个根元类(root metaclass).根元类的isa指针指向自己,这样就形成了一个闭环</p>
 
     
   </div>
