@@ -55,15 +55,15 @@
   <header>
     
       <div class="icon"></div>
-      <a href="/2017/02/24/你问我喜欢什么/">
-  <time datetime="2017-02-24T13:51:07.000Z">
-    2017-02-24
+      <a href="/2016/02/24/你问我喜欢什么/">
+  <time datetime="2016-02-24T13:51:07.000Z">
+    2016-02-24
   </time>
 </a>
     
     
   
-    <h1 class="title"><a href="/2017/02/24/你问我喜欢什么/">你问我喜欢什么</a></h1>
+    <h1 class="title"><a href="/2016/02/24/你问我喜欢什么/">你问我喜欢什么</a></h1>
   
 
   </header>
@@ -80,7 +80,7 @@
     
       
         <div class="alignleft">
-          <a href="/2017/02/24/你问我喜欢什么/#more" class="more-link">Read More</a>
+          <a href="/2016/02/24/你问我喜欢什么/#more" class="more-link">Read More</a>
         </div>
       
       
@@ -121,6 +121,392 @@
         <div class="alignleft">
           <a href="/2015/12/31/时光会安顿好一切的/#more" class="more-link">Read More</a>
         </div>
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/12/24/#我的阅读# iOS进阶/">
+  <time datetime="2015-12-24T09:51:07.000Z">
+    2015-12-24
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/12/24/#我的阅读# iOS进阶/"></a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h3 id="工具介绍"><a href="#工具介绍" class="headerlink" title="工具介绍"></a>工具介绍</h3><h3 id="开发实践"><a href="#开发实践" class="headerlink" title="开发实践"></a>开发实践</h3><h4 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h4><p>现在都是arc,想看非arc情况,给对应编译文件添加编译参数 -fno-objc-arc<br>开启手动管理引用计数模式</p>
+<blockquote>
+<p>为什么需要引用计数</p>
+</blockquote>
+<p>在通常的函数内,通常是使用一个临时的对象,是不需要修改它的引用计数的<br>,只需要在函数返回前将对象销毁就可以了.</p>
+<p>引用计数真正派上用场,是在面向对象的程序设计架构中,用于对象之间传递和共享数据.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">NSObject *obj = [NSObject alloc]init];</div><div class="line">[obj release];</div><div class="line">//打印 obj的retaincount 会发现还是1 为什么不是0呢?因为马上就要被回收了,改变这个值没什么意义,而且减少一次对内存的操作,加速对象的回收</div></pre></td></tr></table></figure>
+<blockquote>
+<p>循环引用的问题 reference cycles</p>
+</blockquote>
+<p>引用计数这种内存管理方式虽然简单,但是有一个比较大的瑕疵,不能很好地解决循环引用的问题</p>
+<p>例:对象a和b相互引用了对方作为自己的成员变量,只有当自己销毁时,才能将成员变脸的引用计数减1.而对象a的销毁依赖于对象b的销毁,对象b的销毁又依赖于a的销毁,就造成了循环引用的问题,即使外界没有任何指针能够访问他们了,他们也无法被释放.</p>
+<p>不止两个对象,多个对象更容易形成环状.</p>
+<p>解决循环引用的问题,一种是手动发现这个循环引用,主动把这个环断开,这又回到了”谁申请谁释放”的内存管理时代,这种方法要求比较高,需要知道在什么时候断开循环引用回收内存,这种方法并不常用,更常见的是使用弱引用的方法.</p>
+<p>若引用虽然持有对象,但是并不增加引用计数,这样就避免了循环引用的产生</p>
+<p>弱引用通常用在delegate中.</p>
+<p>使用xcode检测循环引用.<br>循环引用的代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">NSMutableArray *first = [NSMutableArray array];</div><div class="line">NSMutableArray *second = [NSMutableArray array];</div><div class="line">[first addObject:second];</div><div class="line">[second addObject:first];</div></pre></td></tr></table></figure>
+<p>product-profile-leaks-cycles/root</p>
+<blockquote>
+<p>ARC<br>有两种疑惑:</p>
+<ol>
+<li>从MRC过来的老一代iOS开发程序员,对ARC持怀疑态度,不敢用</li>
+<li>11年之后,从ARC开始学习的新手,完全不知道引用计数是啥,对ARC有很强的依赖,但不知道ARC内部的原理</li>
+</ol>
+<p>Core Foundation对象的内存管理</p>
+</blockquote>
+<p>底层的Core Foundation对象,大多以XxxCreateWithXxx的方式创建</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">创建一个string对象</div><div class="line"></div><div class="line">CFStringRef str = CFStringCreateWithCFString(..);</div><div class="line"></div><div class="line">创建一个CFFontRef对象</div><div class="line"></div><div class="line">CFFontRef fontRef = CFFontCreateWithName(...);</div></pre></td></tr></table></figure>
+<p>CFRetain ,CFRelease 方法,对应Objective-C的retain, release方法<br>所以对于底层的Core Foundation对象,只需要延续以前的手工管理引用计数的方法就可以了</p>
+<p>Core Foundation与Objective-C对象相互转换的问题,告诉编译器,转换的过程中,引用计数如何调整.</p>
+<ul>
+<li>_bridge只做类型转换,不修改相关对象的引用计数</li>
+<li>_bridge_retained,类型转换后,引用计数加1</li>
+<li>_bridge_transfer,类型转换后,将该对象的引用计数交给ARC管理</li>
+</ul>
+<h3 id="iOS开发底层原理"><a href="#iOS开发底层原理" class="headerlink" title="iOS开发底层原理"></a>iOS开发底层原理</h3><h4 id="Objective-C对象模型"><a href="#Objective-C对象模型" class="headerlink" title="Objective-C对象模型"></a>Objective-C对象模型</h4><blockquote>
+<p>isa指针</p>
+</blockquote>
+<p>可以通过cmd+shift+o快捷键查看NSObject, objc.h和runtime的头文件查看相应的代码结构</p>
+<p>NSObject就是一个包含isa指针的结构体</p>
+<p>每一个类实际上也是一个对象,也有一个名为isa的指针</p>
+<p>因为类是一个对象,所以它必须是另一个类的实例,这个类就是元类(metaclass)</p>
+<p>元类保存了类方法的列表,当一个类方法被调用时,元类会首先查找它自己本身是否有该类方法的实现,如果没有,该元类会向它的父类查找,一直找到继承链的头</p>
+<p>元类也是一个对象,那么元类的isa指针又指向哪呢?为了设计上的完整,所有元类的isa指针都会指向一个根元类(root metaclass).根元类的isa指针指向自己,这样就形成了一个闭环</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/12/24/#我的阅读# iOS基础开发教材/">
+  <time datetime="2015-12-24T09:51:07.000Z">
+    2015-12-24
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/12/24/#我的阅读# iOS基础开发教材/"></a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>地址: <a href="https://zonble.gitbooks.io/kkbox-ios-dev/content/" target="_blank" rel="external">https://zonble.gitbooks.io/kkbox-ios-dev/content/</a></p>
+<h4 id="由下而上的学习-bottom-up"><a href="#由下而上的学习-bottom-up" class="headerlink" title="由下而上的学习(bottom-up):"></a>由下而上的学习(bottom-up):</h4><p>先了解整个开发框架的底层，以及整个框架的基本概念，然后才去一个个去看在这个框架中有哪些 API、以及有哪些第三方 library 可以使用</p>
+<h4 id="学习新知识的时候-学会这样挑战自己-确认自己是否完全理解自己想要学习的东西"><a href="#学习新知识的时候-学会这样挑战自己-确认自己是否完全理解自己想要学习的东西" class="headerlink" title="学习新知识的时候,学会这样挑战自己,确认自己是否完全理解自己想要学习的东西"></a>学习新知识的时候,学会这样挑战自己,确认自己是否完全理解自己想要学习的东西</h4><p>我有没有办法用一句话来描述这个东西是什么?还有,它可以用在哪里?</p>
+<h4 id="Selector"><a href="#Selector" class="headerlink" title="Selector"></a>Selector</h4><p>简短的定义:</p>
+<blockquote>
+<p>Selector 就是用字符串表示某个 object 的某个 method</p>
+</blockquote>
+<p>更专业的说法:</p>
+<blockquote>
+<p>Selector 就是 Objective-C 的 virtual table 中指向实际执行 function pointer 的一個 C 字串</p>
+</blockquote>
+<p>Selector 的用途?</p>
+<blockquote>
+<p>因为 method 可以用字串表示，因此，某个 method 就可以变成可以用來传递的参数</p>
+</blockquote>
+<h4 id="Objective-C-Class-Object到底是什么"><a href="#Objective-C-Class-Object到底是什么" class="headerlink" title="Objective-C Class/Object到底是什么?"></a>Objective-C Class/Object到底是什么?</h4><p>oc 是 c 的 superset(超集),在 c 的基础上加了层稀薄的面向对象,cocoa 名字的由来就是 c+OO, 所以在 oc 中可以直接调用 c 的 api,如果将 m 改为 mm,就可以混合 c++ 语法,编程 Objecttive-C++</p>
+<p>oc 的代码在 compile time,compiler会将其编译成 c 然后继续编译,所有 oc 的 class会变成c 的 structure,所有的 method 以及 block 都会编译成 c function,最后在执行阶段 runtime才会建立c structure 和 c function 之间的关系,所以一个 clas 到底有多少 method 可以调用是在 runtime 阶段决定的</p>
+<p>例子:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@interface MyClass : NSObject &#123;</div><div class="line">    int a;</div><div class="line">&#125;</div><div class="line">@end</div></pre></td></tr></table></figure>
+<p>对应的 structure</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">typedef struct &#123;</div><div class="line">    int a;</div><div class="line">&#125; MyClass;</div></pre></td></tr></table></figure>
+<h4 id="Selector-用途"><a href="#Selector-用途" class="headerlink" title="Selector 用途"></a>Selector 用途</h4><ol>
+<li>target/action pattern</li>
+<li>检查 method 是否存在</li>
+<li>timer</li>
+<li>接收 nsnotification</li>
+<li>在某个 thread执行 method</li>
+<li>array排序</li>
+<li>代替if-else 与 switch-case</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[object performSelector:NSSelectorFromString(@[@&quot;doSomething&quot;,</div><div class="line">    @&quot;doAnotherThing&quot;][condition])];</div></pre></td></tr></table></figure>
+<p>给method改名 比替换效果要好的是 选中方法名 右键refactor-rename 替换更多的用在对变量更改名字</p>
+<h4 id="Category"><a href="#Category" class="headerlink" title="Category"></a>Category</h4><blockquote>
+<p>不用继承class 直接增加新method,或替换原来的method</p>
+</blockquote>
+<p>原本category只能添加method不能添加新的成员变量 iOS4之后 objc_setAssociatedObject可以实现添加变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">id a = [[NSObject alloc] init];</div><div class="line">id b = [[NSObject alloc] init];</div><div class="line">b = a;</div><div class="line">[a release];</div><div class="line">[b release];</div></pre></td></tr></table></figure>
+<blockquote>
+<p>在第三行中，由於 b 指向了 a 原本所指向的記憶體，但是 b原本所指向的記憶體卻沒有釋放，同時再也沒有任何變數指向 b原本指向的記憶體，因此這塊記憶體就發生了記憶體漏水。接著，在第四行呼叫[a release] 時，這塊記憶體就已經被放掉了，但是由於 a 與 b都已經指向了同一塊記憶體，所以第五行的 [b release]也是操作同一塊記憶體，於是會發生 EXC_BAD_ACCESS 錯誤。</p>
+</blockquote>
+<h4 id="lazy-loading"><a href="#lazy-loading" class="headerlink" title="lazy loading"></a>lazy loading</h4><p>Lazy Loading 就是：我們要去使用某個物件的時候，我們才去建立那個物件，避免在物件初始時就建立了所有的property，而達到讓初始物件這個動作加速的效果。 </p>
+<h4 id="block-delegate适用情况"><a href="#block-delegate适用情况" class="headerlink" title="block delegate适用情况"></a>block delegate适用情况</h4><p>如果一个method 的呼叫只有一个callback 就用block 多个就用delegate</p>
+<p>block中的 <strong>block </strong>weak关键字<br>用<strong>block声明的变量在block内部可以更改
+</strong>weak 解决循环应用的问题</p>
+<h4 id="Notifcation-Center"><a href="#Notifcation-Center" class="headerlink" title="Notifcation Center"></a>Notifcation Center</h4><p>当成一种广播系统.<br>当a改变,而其他b c d 多个需要知道a的状态,a不必跟他们说,而是直接告诉广播中心:我要改变了!!<br>至于bcd等想知道a状态变化的,需要对这个广播中心订阅相应的通知 ,所以当a发出变化的通知的时候,这个广播中心所有订阅的都会知道这个消息</p>
+<blockquote>
+<p>接收 notification</p>
+</blockquote>
+<p>一个notification包含几个部分:</p>
+<ol>
+<li>object :发送者,谁发出了这个通知</li>
+<li>name : 这个通知叫啥名字</li>
+<li>user info : 这个通知携带的其他信息</li>
+</ol>
+<p>[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doSomething:) name:NotificationName Object:nil]</p>
+<p>指定由谁发出 叫什么名字的通知,以及指定负责处理通知的selector object 为nil就是无论这个通知是由谁发出的 都要去处理</p>
+<p>name为nil就是接收对应的所有的通知</p>
+<p>如果不需要继续订阅通知  通常是在dealloc里头 removeObserver</p>
+<blockquote>
+<p>发送 notification</p>
+</blockquote>
+<ul>
+<li>(void)postNotification:(nsnotification *) name  object userinfo</li>
+</ul>
+<h4 id="设计模式-design-pattern"><a href="#设计模式-design-pattern" class="headerlink" title="设计模式 design pattern"></a>设计模式 design pattern</h4><p>在软件设计中,针对一般问题/并且可以重复使用的解决方案</p>
+<h4 id="BOOL和bool"><a href="#BOOL和bool" class="headerlink" title="BOOL和bool"></a>BOOL和bool</h4><p>c语言中一开始是没有bool类型的,oc自己定义了BOOL 后来c又有了bool 64位是没啥区别的 BOOL被定义为一个int<br>32位中被定义为char BOOL和bool的区别就是一个byte 跟4个byte的区别</p>
+<p>BOOL转成nsnumber @(YES) @(NO)</p>
+<h4 id="NSInteger-NSUInteger"><a href="#NSInteger-NSUInteger" class="headerlink" title="NSInteger NSUInteger"></a>NSInteger NSUInteger</h4><p>nsinteger来自c的整数<br>64位下nsinteger 为long 32下就是int 同理NSUInterger则是 unsigned long unsigned int</p>
+<h4 id="NULL-Nil-nil"><a href="#NULL-Nil-nil" class="headerlink" title="NULL Nil nil"></a>NULL Nil nil</h4><p>oc中有好多代表不存在没有什么的东西<br>NULL,nil, Nil,NSNull, NSNotFound</p>
+<blockquote>
+<p>NULL 来源于c 就是指向0的指针</p>
+<p>nil oc中的空也是指向0的指针<br>当我们不想使用mougeobject时候 会将它指向nil 对nil调用任何的method都不会有问题</p>
+</blockquote>
+<p>nsarray nsdictionnary 遇到nil的结尾  就会把之后的截掉</p>
+<blockquote>
+<p>Nil<br>nil是空的instance Nil则是空的class 想要判断class是不是空的时候 要用Nil而不是nil</p>
+<p>NSNULL<br>oc中真真切切存在的一种类型 class [NSNULL null] “没有东西”</p>
+<p>NSNotFound </p>
+</blockquote>
+<h4 id="Responder"><a href="#Responder" class="headerlink" title="Responder"></a>Responder</h4><p>从工程师角度来讲:所谓的UI都是幻觉 [手指按到了屏幕上的按钮]这件事情本身并不存在,而制作UI就是在制造幻觉</p>
+<blockquote>
+<p>事件的传递<br>硬件把事件传递到app中,交给UIApplication分发事件<br>UIApplication把事件分发到key window,然后key window分发事件<br>key window开始寻找view heirarchy中最上层的vc中的view 发现最上层的view是个button<br>触发button的target/action</p>
+</blockquote>
+<p>第一响应者 first responder<br>相应链 responder chain</p>
+<h4 id="runloop"><a href="#runloop" class="headerlink" title="runloop"></a>runloop</h4><h4 id="Threading"><a href="#Threading" class="headerlink" title="Threading"></a>Threading</h4><ol>
+<li>perform selector</li>
+<li>gcd (grand centeral dispatch)</li>
+<li>NSOperation, NSOperaionQueue</li>
+</ol>
+<h4 id="NSCoding"><a href="#NSCoding" class="headerlink" title="NSCoding"></a>NSCoding</h4><p>一个protocol<br>@protocol NSCoding</p>
+<ul>
+<li>(void)encodeWithCoder:(NSCoder *)aCoder; //object 转为 nsdata</li>
+<li>(id)initWithCoder:(NSCoder *)aCoder; //nsdata 转为object</li>
+</ul>
+<h4 id="Core-Animation"><a href="#Core-Animation" class="headerlink" title="Core Animation"></a>Core Animation</h4><ol>
+<li>CALayer</li>
+<li>CAAnimation</li>
+<li>CATransition</li>
+</ol>
+<p>calayer想象成演员 caanimation剧本 一个动画就是好多演员按照剧本演出 catransition 剧本演出速度 持续时间的玩意</p>
+<h4 id="CALayer-与-UIView的关系"><a href="#CALayer-与-UIView的关系" class="headerlink" title="CALayer 与 UIView的关系"></a>CALayer 与 UIView的关系</h4><p>任何一个view都是由两种性质组成的:</p>
+<ol>
+<li>一是可以被操作的 被点击拉啥的,这是一个view作为responder的部分</li>
+<li>view展现出来的外观 其实是里头calayer的样子</li>
+</ol>
+<p>draw rect 其实是个delegate call 用途不是绘制uiview 而是绘制calayer的内容</p>
+<p>重绘calayer时候 会呼叫calayer 的drawInContext</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2015/02/24/#我的阅读# Node.js相关/">
+  <time datetime="2015-02-24T09:51:07.000Z">
+    2015-02-24
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2015/02/24/#我的阅读# Node.js相关/"></a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h3 id="Node-js是什么？"><a href="#Node-js是什么？" class="headerlink" title="Node.js是什么？"></a>Node.js是什么？</h3><p>Node.js，或者 Node，是一个可以让 JavaScript 运行在服务器端的平台。它可以让 JavaScript 脱离浏览器的束缚运行在一般的服务器环境下，就像运行 Python、Perl、PHP、Ruby 程序一样。你可以用 Node.js 轻松地进行服务器端应用开发，Python、Perl、PHP、Ruby 能 做的事情 Node.js 几乎都能做，而且可以做得更好。</p>
+<p>Node.js 是一个为实时Web(Real-time Web)应用开发而诞生的平台，它从诞生之初就充分 考虑了在实时响应、超大规模数据要求下架构的可扩展性。这使得它摒弃了传统平台依靠多线 程来实现高并发的设计思路，而采用了单线程、异步式I/O、事件驱动式的程序设计模型。这些 特性不仅带来了巨大的性能提升，还减少了多线程程序设计的复杂性，进而提高了开发效率。</p>
+<p>Node.js 有着强大而灵活的包管 理器(node package manager，npm)，目前已经有上万个第三方模块，其中有网站开发框架， 有 MySQL、PostgreSQL、MongoDB 数据库接口，有模板语言解析、CSS 生成工具、邮件、 加密、图形、调试支持，甚至还有图形用户界面和操作系统 API工具。</p>
+<p>Node.js 不是一种独立的语言，与 PHP、Python、Perl、Ruby 的“既是语言也是平台” 不同。Node.js 也不是一个 JavaScript 框架，不同于 CakePHP、Django、Rails。Node.js 更不 是浏览器端的库，不能与 jQuery、ExtJS 相提并论。Node.js 是一个让 JavaScript 运行在服务 端的开发平台，它让 JavaScript 成为脚本语言世界的一等公民，在服务端堪与 PHP、Python、 Perl、Ruby 平起平坐。</p>
+<p>Node.js 的 JavaScript 引擎是 V8，来自 Google Chrome 项目。V8 号称是目前世界上最快 的 JavaScript 引擎，经历了数次引擎革命，它的 JIT(Just-in-time Compilation，即时编译) 执行速度已经快到了接近本地代码的执行速度。Node.js 不运行在浏览器中，所以也就不存 在 JavaScript 的浏览器兼容性问题，你可以放心地使用 JavaScript 语言的所有特性。</p>
+<p>Node.js 内建了 HTTP 服务器支持，也就是说你可以轻而易举地实现一个网站和服务器<br>的组合。</p>
+<h3 id="安装-Node-js"><a href="#安装-Node-js" class="headerlink" title="安装 Node.js"></a>安装 Node.js</h3><p>可以安装 node安装包 </p>
+<p>因为Node.js版本迭代特别快 采用nvm处理</p>
+<p>安装nvm</p>
+<p>curl -o- <a href="https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh" target="_blank" rel="external">https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh</a> | bash</p>
+<p>查看Node.js版本 因为版本众多，只查看稳定版本</p>
+<p>nvm ls-remote –lts</p>
+<p>直接安装最新版的</p>
+<p>nvm install node</p>
+<p>安装指定版本</p>
+<p>nvm isntall v6.9.4</p>
+<p>安装node的过程已经安装包管理器 npm了</p>
+<h3 id="开始用Node-js编程"><a href="#开始用Node-js编程" class="headerlink" title="开始用Node.js编程"></a>开始用Node.js编程</h3><p>console.log(‘hello’); //保存为js格式 进入相关目录 node hello.js</p>
+<p>命令行直接执行语句 node -e “语句”</p>
+<p>直接node 进入 js的交互式shell</p>
+<h3 id="建立http服务器"><a href="#建立http服务器" class="headerlink" title="建立http服务器"></a>建立http服务器</h3><p>Node.js 将“HTTP服务器”这一层抽离，直接面向浏览器用户</p>
+<p>$ npm install -g supervisor</p>
+<h3 id="异步式I／O（非阻塞式I／O）与事件式编程"><a href="#异步式I／O（非阻塞式I／O）与事件式编程" class="headerlink" title="异步式I／O（非阻塞式I／O）与事件式编程"></a>异步式I／O（非阻塞式I／O）与事件式编程</h3><p>Node.js 最大的特点就是异步式 I/O(或者非阻塞 I/O)与事件紧密结合的编程模式。这 种模式与传统的同步式 I/O 线性的编程思路有很大的不同，因为控制流很大程度上要靠事件 和回调函数来组织，一个逻辑要拆分为若干个单元。</p>
+<p>什么是阻塞(block)呢?线程在执行中如果遇到磁盘读写或网络通信(统称为 I/O 操作)， 通常要耗费较长的时间，这时操作系统会剥夺这个线程的 CPU 控制权，使其暂停执行，同 时将资源让给其他的工作线程，这种线程调度方式称为 阻塞。当 I/O 操作完毕时，操作系统 将这个线程的阻塞状态解除，恢复其对CPU的控制权，令其继续执行。这种 I/O 模式就是通 常的同步式 I/O(Synchronous I/O)或阻塞式 I/O (Blocking I/O)。</p>
+<p>异步式 I/O (Asynchronous I/O)或非阻塞式 I/O (Non-blocking I/O)则针对 所有 I/O 操作不采用阻塞的策略。当线程遇到 I/O 操作时，不会以阻塞的方式等待 I/O 操作 的完成或数据的返回，而只是将 I/O 请求发送给操作系统，继续执行下一条语句。当操作 系统完成 I/O 操作时，以事件的形式通知执行 I/O 操作的线程，线程会在特定时候处理这个 事件。为了处理异步 I/O，线程必须有事件循环，不断地检查有没有未处理的事件，依次予 以处理。<br>阻塞模式下，一个线程只能处理一项任务，要想提高吞吐量必须通过多线程。而非阻塞 模式下，一个线程永远在执行计算操作，这个线程所使用的 CPU 核心利用率永远是 100%， I/O 以事件的方式通知。</p>
+<h3 id="模块module-和包-package"><a href="#模块module-和包-package" class="headerlink" title="模块module 和包 package"></a>模块module 和包 package</h3><p>可以把包理解为实现某个功能模块的集合</p>
+<h3 id="创建和加载模块"><a href="#创建和加载模块" class="headerlink" title="创建和加载模块"></a>创建和加载模块</h3><p>文件和模块是一一对应的，换言之，一个 Node.js 文件就是一个模块，这个文件可能是 JavaScript 代码、JSON 或者编译过的 C/C++ 扩展</p>
+<p>Node.js 提供了 exports 和 require 两个对 象，其中 exports 是模块公开的接口，require 用于从外部获取一个模块的接口，即所获 取模块的 exports 对象。</p>
+<p>和创建对象的区别：require 不会重复加载模块，也就是说无论调用多少次 require，获得的模块都是同一个</p>
+<p>覆盖exports</p>
+<p>exports 本身仅仅是一个普通的空对象，即 {}，它专门用来声明接口，本 质上是通过它为模块闭包1的内部建立了一个有限的访问接口。因为它没有任何特殊的地方， 所以可以用其他东西来代替，譬如我们上面例子中的 Hello 对象</p>
+<h3 id="创建包"><a href="#创建包" class="headerlink" title="创建包"></a>创建包</h3><p>包是在模块基础上更深一步的抽象，Node.js 的包类似于 C/C++ 的函数库或者 Java/.Net 的类库。它将某个独立的功能封装起来，用于发布、更新、依赖管理和版本控制。Node.js 根 据 CommonJS 规范实现了包机制，开发了 npm来解决包的发布和获取需求。</p>
+<h3 id="Node-js核心模块"><a href="#Node-js核心模块" class="headerlink" title="Node.js核心模块"></a>Node.js核心模块</h3><h4 id="全局对象与全局变量"><a href="#全局对象与全局变量" class="headerlink" title="全局对象与全局变量"></a>全局对象与全局变量</h4><p>JavaScript 中有一个特殊的对象，称为全局对象(Global Object)，它及其所有属性都可 以在程序的任何地方访问，即全局变量。在浏览器 JavaScript 中，通常 window 是全局对象， 而 Node.js 中的全局对象是 global，所有全局变量(除了 global 本身以外)都是 global 对象的属性。</p>
+<p>process</p>
+<p>process 是一个全局变量，即 global 对象的属性。它用于描述当前 Node.js 进程状态 的对象，提供了一个与操作系统的简单接口</p>
+<p>console</p>
+<p>console 用于提供控制台标准输出，它是由 Internet Explorer 的 JScript 引擎提供的调试 工具，后来逐渐成为浏览器的事实标准。</p>
+<h4 id="常用工具util"><a href="#常用工具util" class="headerlink" title="常用工具util"></a>常用工具util</h4><p>util.inherits</p>
+<p>util.inspect</p>
+<h4 id="事件驱动-events"><a href="#事件驱动-events" class="headerlink" title="事件驱动 events"></a>事件驱动 events</h4><p>events 是 Node.js 最重要的模块，没有“之一”，原因是 Node.js 本身架构就是事件式 的，而它提供了唯一的接口，所以堪称 Node.js 事件编程的基石</p>
+<p>事件发射器</p>
+<p>events.EventEmitter</p>
+<p>error事件</p>
+<p>继承 EventEmitter</p>
+<h4 id="文件系统-fs-file-system"><a href="#文件系统-fs-file-system" class="headerlink" title="文件系统 fs  file system"></a>文件系统 fs  file system</h4><p>fs.readFile</p>
+<p>fs.readFileSync</p>
+<p>fs.open</p>
+<p>fs.read</p>
+<h4 id="HTTP服务器与客户端"><a href="#HTTP服务器与客户端" class="headerlink" title="HTTP服务器与客户端"></a>HTTP服务器与客户端</h4><p>HTTP 服务器</p>
+<p>http.Server 是 http 模块中的 HTTP 服务器对象，用 Node.js 做的所有基于 HTTP 协 议的系统，如网站、社交应用甚至代理服务器，都是基于 http.Server 实现的。它提供了 一套封装级别很低的 API，仅仅是流控制和简单的消息解析，所有的高层功能都要通过它的 接口来实现。</p>
+<p>http.ServerRequest</p>
+<p>http.ServerResponse</p>
+<p>HTTP 客户端</p>
+<p>http.ClientRequest</p>
+<p>http.ClientResponse</p>
+<h3 id="使用Node-js进行web开发"><a href="#使用Node-js进行web开发" class="headerlink" title="使用Node.js进行web开发"></a>使用Node.js进行web开发</h3><p>Express 框架</p>
+<p>安装 npm install -g express</p>
+<h3 id="Node-js进阶"><a href="#Node-js进阶" class="headerlink" title="Node.js进阶"></a>Node.js进阶</h3><p>模块加载机制</p>
+<ol>
+<li>核心模块</li>
+<li>文件模块</li>
+</ol>
+<p>异步编程模式下的控制流</p>
+<p>Node.js的应用部署</p>
+<p>Node.js的一些劣势</p>
+<h3 id="JavaScript高级特性"><a href="#JavaScript高级特性" class="headerlink" title="JavaScript高级特性"></a>JavaScript高级特性</h3><p>作用域 scope</p>
+<p>闭包</p>
+<p>对象</p>
+<h3 id="Node-js编程规范"><a href="#Node-js编程规范" class="headerlink" title="Node.js编程规范"></a>Node.js编程规范</h3><p>缩进</p>
+<p>行宽</p>
+<p>语句分隔符</p>
+<p>变量定义</p>
+<p>变量名与属性名</p>
+<p>函数</p>
+<p>引号</p>
+<p>关联数组的初始化</p>
+<p>等号</p>
+<p>命名函数</p>
+<p>对象定义</p>
+<p>继承</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
+      
+      
+    
+    <div class="clearfix"></div>
+  </footer>
+</article>
+
+
+  
+    <article class="post">
+  <header>
+    
+      <div class="icon"></div>
+      <a href="/2014/12/24/#我的阅读# python绝技/">
+  <time datetime="2014-12-24T09:51:07.000Z">
+    2014-12-24
+  </time>
+</a>
+    
+    
+  
+    <h1 class="title"><a href="/2014/12/24/#我的阅读# python绝技/"></a></h1>
+  
+
+  </header>
+  
+  <div class="entry">
+    
+      <h3 id="Python相关"><a href="#Python相关" class="headerlink" title="Python相关"></a>Python相关</h3><p>解释型语言,运行时,解释器处理代码并执行</p>
+<p>解释器:提供一个交互的环境,直接Python调用解释器</p>
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>Python中变量储存在内存中,可以存储不同的值,整形,实数,布尔,字符串或者更复杂的数据结构,例如列表和字典</p>
+<blockquote>
+<p>变量不需要声明类型,type(变量)可以打印出变量类型,解释器可以自动识别变量类型</p>
+</blockquote>
+<p>True,False ,list[]</p>
+<h3 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h3><p>字符串模块提供了非常强大的字符串处理</p>
+<p>upper() 字符串全部转大写, lower()小写</p>
+<p>replace(old, new)</p>
+<p>find(“”)是否包含</p>
+<h3 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h3><p>有一些内置的操作列表的方法，例如添 加，删除，插入，弹出，获取索引，排序，计数，排序和反转</p>
+<p>append, sort, index(value), remove(value), len(list)</p>
+<h3 id="字典"><a href="#字典" class="headerlink" title="字典"></a>字典</h3><p>{} ,分割元素</p>
+<p>keys(), iterms(), has_key()</p>
+<h3 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h3><p>套接字socket模块</p>
+<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p>def()</p>
+<h3 id="迭代"><a href="#迭代" class="headerlink" title="迭代"></a>迭代</h3><p>for i in range(1,100)</p>
+<h3 id="I-O文件操作"><a href="#I-O文件操作" class="headerlink" title="I/O文件操作"></a>I/O文件操作</h3><p>open(“text.txt”, ‘r’) 以只读模式打开文本文件</p>
+<p>readlines()遍历文件的每一行</p>
+<p>.strip(‘\n’)去掉每行的换行符</p>
+<h3 id="sys模块-os模块"><a href="#sys模块-os模块" class="headerlink" title="sys模块, os模块"></a>sys模块, os模块</h3><h2 id="哈希加密"><a href="#哈希加密" class="headerlink" title="哈希加密"></a>哈希加密</h2><p>引入crypt模块 crypt.crypt(‘密码’,’盐salt’)<br>加密后的以salt开头的复杂密码</p>
+
+    
+  </div>
+  <footer class="end-sep">
+    
       
       
     
@@ -275,176 +661,6 @@
   </div>
   <footer class="end-sep">
     
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/04/23/无罪行骗/">
-  <time datetime="2014-04-23T04:21:07.000Z">
-    2014-04-23
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/04/23/无罪行骗/">无罪行骗</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>爱情是男人最好的行骗武器，无需成本，口舌得当，一个大活人就到手了；爱情是女人最留恋的致命尖刀，即使被砍的伤痕累累，也会好了伤疤忘了疼；自从世间有了爱情二字，一切不可休止的无罪行骗就开始了。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/02/05/酒罢去/">
-  <time datetime="2014-02-05T08:20:01.000Z">
-    2014-02-05
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/02/05/酒罢去/">酒罢去</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>来往半月匆匆忙忙。</p>
-<p>热闹两红妆。</p>
-<p>杯酒未曾喝尽，</p>
-<p>午夜写诗忙。</p>
-<p>为谁叹息，</p>
-<p>为谁归去，</p>
-<p>为谁醉倒，</p>
-<p>为谁思量。</p>
-<p>庭中热情款客，</p>
-<p>板上喜宰牛羊。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2014/01/24/再回楼/">
-  <time datetime="2014-01-24T03:51:07.000Z">
-    2014-01-24
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2014/01/24/再回楼/">再回楼</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>北上列车南来，</p>
-<p>几人知晓归心久。</p>
-<p>临沂父老，</p>
-<p>各种风景，</p>
-<p>可怜依旧。</p>
-<p>几曾回首，</p>
-<p>人生草木，</p>
-<p>未语休休。</p>
-<p>忙碌奔走，</p>
-<p>与天斗，</p>
-<p>与地斗。</p>
-<p>富贵浮云，</p>
-<p>此情此景，</p>
-<p>不如杯酒，</p>
-<p>酒里春秋。</p>
-
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-      
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
-
-
-  
-    <article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2013/12/25/忆童年之雪米饼/">
-  <time datetime="2013-12-25T13:51:07.000Z">
-    2013-12-25
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title"><a href="/2013/12/25/忆童年之雪米饼/">忆童年之雪米饼</a></h1>
-  
-
-  </header>
-  
-  <div class="entry">
-    
-      <p>吃了五个雪米饼</p>
-<p>这种还怪好吃来</p>
-<p>有点甜味</p>
-<p>仙贝都是咸的</p>
-<p>小时候特别喜欢吃</p>
-<p>记得那时候我哥16岁</p>
-<p>我13岁</p>
-<p>我哥要出去打工 要带吃的</p>
-<p>我爸就给他买了一袋雪米饼</p>
-    
-  </div>
-  <footer class="end-sep">
-    
-      
-        <div class="alignleft">
-          <a href="/2013/12/25/忆童年之雪米饼/#more" class="more-link">Read More</a>
-        </div>
       
       
     
