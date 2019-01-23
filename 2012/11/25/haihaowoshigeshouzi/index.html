@@ -1,151 +1,20 @@
-<!DOCTYPE HTML>
-<html>
-<head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="chrome=1">
-  
-  <title>还好我是个瘦子 | Voshk</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  
-    <meta name="author" content="Voshk">
-  
-  
-    <meta name="description" content="我总觉得自己是个瘦子 
-很想变胖的瘦子 
-每天虽然一直都在吃 
-总是骗自己能吃就是福 
-还不时要找个藉口 
-一有空就疯狂地大吃
-可我还是个瘦子
-还好我是个瘦子
-寂寞的时候可以数数排骨
-还好我是个瘦子
-难过的时候可以提提裤子">
-  
-  <meta name="description" content="我总觉得自己是个瘦子  很想变胖的瘦子  每天虽然一直都在吃  总是骗自己能吃就是福  还不时要找个藉口  一有空就疯狂地大吃 可我还是个瘦子 还好我是个瘦子 寂寞的时候可以数数排骨 还好我是个瘦子 难过的时候可以提提裤子">
-<meta name="keywords" content="瘦子">
-<meta property="og:type" content="article">
-<meta property="og:title" content="还好我是个瘦子">
-<meta property="og:url" content="http://voshk.com/2012/11/25/haihaowoshigeshouzi/index.html">
-<meta property="og:site_name" content="Voshk">
-<meta property="og:description" content="我总觉得自己是个瘦子  很想变胖的瘦子  每天虽然一直都在吃  总是骗自己能吃就是福  还不时要找个藉口  一有空就疯狂地大吃 可我还是个瘦子 还好我是个瘦子 寂寞的时候可以数数排骨 还好我是个瘦子 难过的时候可以提提裤子">
-<meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2017-07-13T00:08:26.000Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="还好我是个瘦子">
-<meta name="twitter:description" content="我总觉得自己是个瘦子  很想变胖的瘦子  每天虽然一直都在吃  总是骗自己能吃就是福  还不时要找个藉口  一有空就疯狂地大吃 可我还是个瘦子 还好我是个瘦子 寂寞的时候可以数数排骨 还好我是个瘦子 难过的时候可以提提裤子">
-  
-  
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  
-  <link rel="stylesheet" href="/css/style.css">
-  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-  
-</head>
-</html>
-<body>
-  <div class="wrapper">
-    <header id="header">
-  <div class="title">
-    <h1><a href="/">Voshk</a></h1>
-    <p><a href="/">在自由的环境下对提高效率的痴迷，就一定会发生创新。</a></p>
-  </div>
-  <nav class="nav">
-    <ul>
-      
-        <li><a href="/archives">归档</a></li>
-      
-        <li><a href="/about">关于</a></li>
-      
-        <li><a href="/timeline">时间线</a></li>
-      
-      
-    </ul>
-    <div class="clearfix"></div>
-  </nav>
-  <div class="clearfix"></div>
-</header>
-    <div class="content"><article class="post">
-  <header>
-    
-      <div class="icon"></div>
-      <a href="/2012/11/25/haihaowoshigeshouzi/">
-  <time datetime="2012-11-25T11:51:07.000Z">
-    2012-11-25
-  </time>
-</a>
-    
-    
-  
-    <h1 class="title">还好我是个瘦子</h1>
-  
+extends partial/layout
 
-  </header>
-  
-  <div class="entry">
-    
-      <p>我总觉得自己是个瘦子 </p>
-<p>很想变胖的瘦子 </p>
-<p>每天虽然一直都在吃 </p>
-<p>总是骗自己能吃就是福 </p>
-<p>还不时要找个藉口 </p>
-<p>一有空就疯狂地大吃</p>
-<p>可我还是个瘦子</p>
-<p>还好我是个瘦子</p>
-<p>寂寞的时候可以数数排骨</p>
-<p>还好我是个瘦子</p>
-<p>难过的时候可以提提裤子</p>
+block site_title
+    != page.title + " · " + config.title
 
-    
-  </div>
-  <footer>
-    
-      
-  <div class="categories">
-    <a class="categories-link" href="/categories/胡言乱语/">胡言乱语</a>
-  </div>
+block description
+    - var desc = page.desc || page.title + ' - ' + config.author;
+    meta(name="description", content=desc)
 
-      
-  <div class="tags">
-    <a class="tags-link" href="/tags/瘦子/">瘦子</a>
-  </div>
+block container
+    include mixins/post
+    +post(page)
 
-    
-    <div class="clearfix"></div>
-  </footer>
-</article>
+block pagination
+    include mixins/paginator
+    +post()
+    include partial/comment
 
-</div>
-  </div>
-  <footer id="footer"><div class="copyright">
-  
-  &copy; 2019 <a href="/">Voshk</a>
-  
-</div>
-<!--
-<div class="theme-copyright">
-  Theme by <a href="https://github.com/orderedlist" target="_blank">orderedlist</a>
-   | 
-  Redesign by <a href="http://heroicyang.com/" target="_blank">Heroic Yang</a>
-</div>
--->
-<div class="clearfix"></div></footer>
-  <script src="//ajax.useso.com/ajax/libs/jquery/2.0.3/jquery.min.js
-"></script>
-<script src="/js/scale.fix.js"></script>
-<script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
-
-
-
-
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
-<script type="text/javascript">
-  (function($){
-    $('.fancybox').fancybox();
-  })(jQuery);
-</script>
-
-</body>
-</html>
+block copyright
+    include partial/copyright
