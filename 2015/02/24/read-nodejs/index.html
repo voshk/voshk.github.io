@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="Voshk">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="Voshk">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content="">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>阅读-NodeJs.相关 · voshk</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin="">
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin="">
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/">voshk</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">阅读-NodeJs.相关</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href="/">voshk</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            阅读-NodeJs.相关
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class="post-intro-tags">
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags="NodeJs">NodeJs</a>
+    
+</div>
+                
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2015/02/24</span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <h3 id="Node-js是什么？"><a href="#Node-js是什么？" class="headerlink" title="Node.js是什么？"></a>Node.js是什么？</h3><p>Node.js，或者 Node，是一个可以让 JavaScript 运行在服务器端的平台。它可以让 JavaScript 脱离浏览器的束缚运行在一般的服务器环境下，就像运行 Python、Perl、PHP、Ruby 程序一样。你可以用 Node.js 轻松地进行服务器端应用开发，Python、Perl、PHP、Ruby 能 做的事情 Node.js 几乎都能做，而且可以做得更好。</p>
+<p>Node.js 是一个为实时Web(Real-time Web)应用开发而诞生的平台，它从诞生之初就充分 考虑了在实时响应、超大规模数据要求下架构的可扩展性。这使得它摒弃了传统平台依靠多线 程来实现高并发的设计思路，而采用了单线程、异步式I/O、事件驱动式的程序设计模型。这些 特性不仅带来了巨大的性能提升，还减少了多线程程序设计的复杂性，进而提高了开发效率。</p>
+<a id="more"></a>
+<p>Node.js 有着强大而灵活的包管 理器(node package manager，npm)，目前已经有上万个第三方模块，其中有网站开发框架， 有 MySQL、PostgreSQL、MongoDB 数据库接口，有模板语言解析、CSS 生成工具、邮件、 加密、图形、调试支持，甚至还有图形用户界面和操作系统 API工具。</p>
+<p>Node.js 不是一种独立的语言，与 PHP、Python、Perl、Ruby 的“既是语言也是平台” 不同。Node.js 也不是一个 JavaScript 框架，不同于 CakePHP、Django、Rails。Node.js 更不 是浏览器端的库，不能与 jQuery、ExtJS 相提并论。Node.js 是一个让 JavaScript 运行在服务 端的开发平台，它让 JavaScript 成为脚本语言世界的一等公民，在服务端堪与 PHP、Python、 Perl、Ruby 平起平坐。</p>
+<p>Node.js 的 JavaScript 引擎是 V8，来自 Google Chrome 项目。V8 号称是目前世界上最快 的 JavaScript 引擎，经历了数次引擎革命，它的 JIT(Just-in-time Compilation，即时编译) 执行速度已经快到了接近本地代码的执行速度。Node.js 不运行在浏览器中，所以也就不存 在 JavaScript 的浏览器兼容性问题，你可以放心地使用 JavaScript 语言的所有特性。</p>
+<p>Node.js 内建了 HTTP 服务器支持，也就是说你可以轻而易举地实现一个网站和服务器<br>的组合。</p>
+<h3 id="安装-Node-js"><a href="#安装-Node-js" class="headerlink" title="安装 Node.js"></a>安装 Node.js</h3><p>可以安装 node安装包 </p>
+<p>因为Node.js版本迭代特别快 采用nvm处理</p>
+<p>安装nvm</p>
+<p>curl -o- <a href="https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh" target="_blank" rel="noopener">https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh</a> | bash</p>
+<p>查看Node.js版本 因为版本众多，只查看稳定版本</p>
+<p>nvm ls-remote –lts</p>
+<p>直接安装最新版的</p>
+<p>nvm install node</p>
+<p>安装指定版本</p>
+<p>nvm isntall v6.9.4</p>
+<p>安装node的过程已经安装包管理器 npm了</p>
+<h3 id="开始用Node-js编程"><a href="#开始用Node-js编程" class="headerlink" title="开始用Node.js编程"></a>开始用Node.js编程</h3><p>console.log(‘hello’); //保存为js格式 进入相关目录 node hello.js</p>
+<p>命令行直接执行语句 node -e “语句”</p>
+<p>直接node 进入 js的交互式shell</p>
+<h3 id="建立http服务器"><a href="#建立http服务器" class="headerlink" title="建立http服务器"></a>建立http服务器</h3><p>Node.js 将“HTTP服务器”这一层抽离，直接面向浏览器用户</p>
+<p>$ npm install -g supervisor</p>
+<h3 id="异步式I／O（非阻塞式I／O）与事件式编程"><a href="#异步式I／O（非阻塞式I／O）与事件式编程" class="headerlink" title="异步式I／O（非阻塞式I／O）与事件式编程"></a>异步式I／O（非阻塞式I／O）与事件式编程</h3><p>Node.js 最大的特点就是异步式 I/O(或者非阻塞 I/O)与事件紧密结合的编程模式。这 种模式与传统的同步式 I/O 线性的编程思路有很大的不同，因为控制流很大程度上要靠事件 和回调函数来组织，一个逻辑要拆分为若干个单元。</p>
+<p>什么是阻塞(block)呢?线程在执行中如果遇到磁盘读写或网络通信(统称为 I/O 操作)， 通常要耗费较长的时间，这时操作系统会剥夺这个线程的 CPU 控制权，使其暂停执行，同 时将资源让给其他的工作线程，这种线程调度方式称为 阻塞。当 I/O 操作完毕时，操作系统 将这个线程的阻塞状态解除，恢复其对CPU的控制权，令其继续执行。这种 I/O 模式就是通 常的同步式 I/O(Synchronous I/O)或阻塞式 I/O (Blocking I/O)。</p>
+<p>异步式 I/O (Asynchronous I/O)或非阻塞式 I/O (Non-blocking I/O)则针对 所有 I/O 操作不采用阻塞的策略。当线程遇到 I/O 操作时，不会以阻塞的方式等待 I/O 操作 的完成或数据的返回，而只是将 I/O 请求发送给操作系统，继续执行下一条语句。当操作 系统完成 I/O 操作时，以事件的形式通知执行 I/O 操作的线程，线程会在特定时候处理这个 事件。为了处理异步 I/O，线程必须有事件循环，不断地检查有没有未处理的事件，依次予 以处理。<br>阻塞模式下，一个线程只能处理一项任务，要想提高吞吐量必须通过多线程。而非阻塞 模式下，一个线程永远在执行计算操作，这个线程所使用的 CPU 核心利用率永远是 100%， I/O 以事件的方式通知。</p>
+<h3 id="模块module-和包-package"><a href="#模块module-和包-package" class="headerlink" title="模块module 和包 package"></a>模块module 和包 package</h3><p>可以把包理解为实现某个功能模块的集合</p>
+<h3 id="创建和加载模块"><a href="#创建和加载模块" class="headerlink" title="创建和加载模块"></a>创建和加载模块</h3><p>文件和模块是一一对应的，换言之，一个 Node.js 文件就是一个模块，这个文件可能是 JavaScript 代码、JSON 或者编译过的 C/C++ 扩展</p>
+<p>Node.js 提供了 exports 和 require 两个对 象，其中 exports 是模块公开的接口，require 用于从外部获取一个模块的接口，即所获 取模块的 exports 对象。</p>
+<p>和创建对象的区别：require 不会重复加载模块，也就是说无论调用多少次 require，获得的模块都是同一个</p>
+<p>覆盖exports</p>
+<p>exports 本身仅仅是一个普通的空对象，即 {}，它专门用来声明接口，本 质上是通过它为模块闭包1的内部建立了一个有限的访问接口。因为它没有任何特殊的地方， 所以可以用其他东西来代替，譬如我们上面例子中的 Hello 对象</p>
+<h3 id="创建包"><a href="#创建包" class="headerlink" title="创建包"></a>创建包</h3><p>包是在模块基础上更深一步的抽象，Node.js 的包类似于 C/C++ 的函数库或者 Java/.Net 的类库。它将某个独立的功能封装起来，用于发布、更新、依赖管理和版本控制。Node.js 根 据 CommonJS 规范实现了包机制，开发了 npm来解决包的发布和获取需求。</p>
+<h3 id="Node-js核心模块"><a href="#Node-js核心模块" class="headerlink" title="Node.js核心模块"></a>Node.js核心模块</h3><h4 id="全局对象与全局变量"><a href="#全局对象与全局变量" class="headerlink" title="全局对象与全局变量"></a>全局对象与全局变量</h4><p>JavaScript 中有一个特殊的对象，称为全局对象(Global Object)，它及其所有属性都可 以在程序的任何地方访问，即全局变量。在浏览器 JavaScript 中，通常 window 是全局对象， 而 Node.js 中的全局对象是 global，所有全局变量(除了 global 本身以外)都是 global 对象的属性。</p>
+<p>process</p>
+<p>process 是一个全局变量，即 global 对象的属性。它用于描述当前 Node.js 进程状态 的对象，提供了一个与操作系统的简单接口</p>
+<p>console</p>
+<p>console 用于提供控制台标准输出，它是由 Internet Explorer 的 JScript 引擎提供的调试 工具，后来逐渐成为浏览器的事实标准。</p>
+<h4 id="常用工具util"><a href="#常用工具util" class="headerlink" title="常用工具util"></a>常用工具util</h4><p>util.inherits</p>
+<p>util.inspect</p>
+<h4 id="事件驱动-events"><a href="#事件驱动-events" class="headerlink" title="事件驱动 events"></a>事件驱动 events</h4><p>events 是 Node.js 最重要的模块，没有“之一”，原因是 Node.js 本身架构就是事件式 的，而它提供了唯一的接口，所以堪称 Node.js 事件编程的基石</p>
+<p>事件发射器</p>
+<p>events.EventEmitter</p>
+<p>error事件</p>
+<p>继承 EventEmitter</p>
+<h4 id="文件系统-fs-file-system"><a href="#文件系统-fs-file-system" class="headerlink" title="文件系统 fs  file system"></a>文件系统 fs  file system</h4><p>fs.readFile</p>
+<p>fs.readFileSync</p>
+<p>fs.open</p>
+<p>fs.read</p>
+<h4 id="HTTP服务器与客户端"><a href="#HTTP服务器与客户端" class="headerlink" title="HTTP服务器与客户端"></a>HTTP服务器与客户端</h4><p>HTTP 服务器</p>
+<p>http.Server 是 http 模块中的 HTTP 服务器对象，用 Node.js 做的所有基于 HTTP 协 议的系统，如网站、社交应用甚至代理服务器，都是基于 http.Server 实现的。它提供了 一套封装级别很低的 API，仅仅是流控制和简单的消息解析，所有的高层功能都要通过它的 接口来实现。</p>
+<p>http.ServerRequest</p>
+<p>http.ServerResponse</p>
+<p>HTTP 客户端</p>
+<p>http.ClientRequest</p>
+<p>http.ClientResponse</p>
+<h3 id="使用Node-js进行web开发"><a href="#使用Node-js进行web开发" class="headerlink" title="使用Node.js进行web开发"></a>使用Node.js进行web开发</h3><p>Express 框架</p>
+<p>安装 npm install -g express</p>
+<h3 id="Node-js进阶"><a href="#Node-js进阶" class="headerlink" title="Node.js进阶"></a>Node.js进阶</h3><p>模块加载机制</p>
+<ol>
+<li>核心模块</li>
+<li>文件模块</li>
+</ol>
+<p>异步编程模式下的控制流</p>
+<p>Node.js的应用部署</p>
+<p>Node.js的一些劣势</p>
+<h3 id="JavaScript高级特性"><a href="#JavaScript高级特性" class="headerlink" title="JavaScript高级特性"></a>JavaScript高级特性</h3><p>作用域 scope</p>
+<p>闭包</p>
+<p>对象</p>
+<h3 id="Node-js编程规范"><a href="#Node-js编程规范" class="headerlink" title="Node.js编程规范"></a>Node.js编程规范</h3><p>缩进</p>
+<p>行宽</p>
+<p>语句分隔符</p>
+<p>变量定义</p>
+<p>变量名与属性名</p>
+<p>函数</p>
+<p>引号</p>
+<p>关联数组的初始化</p>
+<p>等号</p>
+<p>命名函数</p>
+<p>对象定义</p>
+<p>继承</p>
+
+    </article>
+    <!-- license  -->
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href="/2015/12/24/read-iOS-improve/" title="阅读-iOS进阶">
+                    <div class="nextTitle">阅读-iOS进阶</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/2014/12/24/read-python/" title="阅读-python相关">
+                    <div class="prevTitle">阅读-python相关</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:voshk@hotmail.com" class="iconfont-archer email" title="email"></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/voshk" class="iconfont-archer github" target="_blank" title="github"></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title="wechat">
+                  
+                  <img class="profile-qr" src="/assets/example_qr.png">
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 26
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2017 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/08</span><a class="archive-post-title" href="/2017/03/08/show-respect-to-who-changed-himself/">向默默改变自己的人致敬</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/24</span><a class="archive-post-title" href="/2017/02/24/role-change/">角色转变</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/24</span><a class="archive-post-title" href="/2017/02/24/from-question-to-programming/">从问题到程序</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2016 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/24</span><a class="archive-post-title" href="/2016/12/24/train-of-performance/">培训-绩效管理</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/01</span><a class="archive-post-title" href="/2016/09/01/from-iOS-to-Android/">从iOS到android开发</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/24</span><a class="archive-post-title" href="/2016/02/24/you-tell-me-what-i-like/">你问我喜欢什么</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2015 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/31</span><a class="archive-post-title" href="/2015/12/31/time-will-feedback/">时光会安顿好一切的</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/24</span><a class="archive-post-title" href="/2015/12/24/iOS-base/">iOS基础开发教材</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/24</span><a class="archive-post-title" href="/2015/12/24/read-iOS-improve/">阅读-iOS进阶</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/24</span><a class="archive-post-title" href="/2015/02/24/read-nodejs/">阅读-NodeJs.相关</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2014 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/24</span><a class="archive-post-title" href="/2014/12/24/read-python/">阅读-python相关</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/28</span><a class="archive-post-title" href="/2014/09/28/i-came-from-shandong/">我从山东那地方来</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/01</span><a class="archive-post-title" href="/2014/09/01/buy-something-to-eat/">今晚我去买菜</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/01</span><a class="archive-post-title" href="/2014/06/01/the-day-last-year/">去年今日</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/11</span><a class="archive-post-title" href="/2014/05/11/rainny-day/">下雨</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/23</span><a class="archive-post-title" href="/2014/04/23/cheat-with-no-guilt/">无罪行骗</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/05</span><a class="archive-post-title" href="/2014/02/05/just-leave/">酒罢去</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/24</span><a class="archive-post-title" href="/2014/01/24/i-will-come/">再回楼</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2013 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/25</span><a class="archive-post-title" href="/2013/12/25/child-memory-xuemibing/">忆童年之雪米饼</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/24</span><a class="archive-post-title" href="/2013/12/24/a-beautiful-day/">美好的一天</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/27</span><a class="archive-post-title" href="/2013/11/27/can-not-sleep/">失眠</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/24</span><a class="archive-post-title" href="/2013/11/24/i-with-my-dog/">人狗情未了</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/03</span><a class="archive-post-title" href="/2013/11/03/the-10-railwaystation/">地铁十号线</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/18</span><a class="archive-post-title" href="/2013/02/18/seeyou/">见你</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2012 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/25</span><a class="archive-post-title" href="/2012/11/25/a-thin-man/">还好我是个瘦子</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2011 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/24</span><a class="archive-post-title" href="/2011/02/24/daxueweiyiyicimanfen/">大学唯一一次满分</a>
+        </li>
+    
+    </ul></div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="美好"><span class="iconfont-archer">&#xe606;</span>美好</span>
+    
+        <span class="sidebar-tag-name" data-tags="瘦子"><span class="iconfont-archer">&#xe606;</span>瘦子</span>
+    
+        <span class="sidebar-tag-name" data-tags="今晚"><span class="iconfont-archer">&#xe606;</span>今晚</span>
+    
+        <span class="sidebar-tag-name" data-tags="买菜"><span class="iconfont-archer">&#xe606;</span>买菜</span>
+    
+        <span class="sidebar-tag-name" data-tags="失眠"><span class="iconfont-archer">&#xe606;</span>失眠</span>
+    
+        <span class="sidebar-tag-name" data-tags="行骗"><span class="iconfont-archer">&#xe606;</span>行骗</span>
+    
+        <span class="sidebar-tag-name" data-tags="童年"><span class="iconfont-archer">&#xe606;</span>童年</span>
+    
+        <span class="sidebar-tag-name" data-tags="大学"><span class="iconfont-archer">&#xe606;</span>大学</span>
+    
+        <span class="sidebar-tag-name" data-tags="安卓"><span class="iconfont-archer">&#xe606;</span>安卓</span>
+    
+        <span class="sidebar-tag-name" data-tags="阅读"><span class="iconfont-archer">&#xe606;</span>阅读</span>
+    
+        <span class="sidebar-tag-name" data-tags="回家"><span class="iconfont-archer">&#xe606;</span>回家</span>
+    
+        <span class="sidebar-tag-name" data-tags="感情"><span class="iconfont-archer">&#xe606;</span>感情</span>
+    
+        <span class="sidebar-tag-name" data-tags="山东"><span class="iconfont-archer">&#xe606;</span>山东</span>
+    
+        <span class="sidebar-tag-name" data-tags="阅读 iOS"><span class="iconfont-archer">&#xe606;</span>阅读 iOS</span>
+    
+        <span class="sidebar-tag-name" data-tags="酒"><span class="iconfont-archer">&#xe606;</span>酒</span>
+    
+        <span class="sidebar-tag-name" data-tags="python"><span class="iconfont-archer">&#xe606;</span>python</span>
+    
+        <span class="sidebar-tag-name" data-tags="下雨"><span class="iconfont-archer">&#xe606;</span>下雨</span>
+    
+        <span class="sidebar-tag-name" data-tags="转变 角色"><span class="iconfont-archer">&#xe606;</span>转变 角色</span>
+    
+        <span class="sidebar-tag-name" data-tags="思念"><span class="iconfont-archer">&#xe606;</span>思念</span>
+    
+        <span class="sidebar-tag-name" data-tags="回忆"><span class="iconfont-archer">&#xe606;</span>回忆</span>
+    
+        <span class="sidebar-tag-name" data-tags="改变"><span class="iconfont-archer">&#xe606;</span>改变</span>
+    
+        <span class="sidebar-tag-name" data-tags="地铁"><span class="iconfont-archer">&#xe606;</span>地铁</span>
+    
+        <span class="sidebar-tag-name" data-tags="去年"><span class="iconfont-archer">&#xe606;</span>去年</span>
+    
+        <span class="sidebar-tag-name" data-tags="时光"><span class="iconfont-archer">&#xe606;</span>时光</span>
+    
+        <span class="sidebar-tag-name" data-tags="绩效管理"><span class="iconfont-archer">&#xe606;</span>绩效管理</span>
+    
+        <span class="sidebar-tag-name" data-tags="喜欢"><span class="iconfont-archer">&#xe606;</span>喜欢</span>
+    
+        <span class="sidebar-tag-name" data-tags="程序"><span class="iconfont-archer">&#xe606;</span>程序</span>
+    
+        <span class="sidebar-tag-name" data-tags="NodeJs"><span class="iconfont-archer">&#xe606;</span>NodeJs</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br>
+    1、请确保node版本大于6.2<br>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="胡言乱语"><span class="iconfont-archer">&#xe60a;</span>胡言乱语</span>
+    
+        <span class="sidebar-category-name" data-categories="胡思乱想"><span class="iconfont-archer">&#xe60a;</span>胡思乱想</span>
+    
+        <span class="sidebar-category-name" data-categories="我的阅读"><span class="iconfont-archer">&#xe60a;</span>我的阅读</span>
+    
+        <span class="sidebar-category-name" data-categories="培训"><span class="iconfont-archer">&#xe60a;</span>培训</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "Voshk"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+
