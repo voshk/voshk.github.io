@@ -22,7 +22,7 @@
     <meta name="description" content="">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>voshk</title>
+    <title>new page · voshk</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -338,137 +338,36 @@
 </script>        
         <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
         <div class="container container-unloaded">
-            <main class="main index-page">
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href="/2015/12/31/shiguanghuiandunhaoyiqiede/">
-            
-                <span>时光会安顿好一切的</span>
-        </a>
-        <div class="abstract-content">
-            <p>2015年即将过去。这样的岁末交接，最容易触发对时光流逝和人世沧桑的感慨。</p>
-<p>朱利安.巴恩斯在《终结的感觉》说到 “时光先安顿我们，继而又迷惑我们。我以为自己在慢慢成熟，而其实我们只是安然无恙而已。我们以为自己很有担当，其实我们十分懦弱。我们所谓的务实，充其量不过是逃避，绝非直面。”</p>
-<p>过去的2015，我是成熟了还是安然无恙？实在的是时光，它安顿了我也迷惑了我。</p>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2015/12/31</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class="abstract-tags">
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="时光">时光</a>
-    
-</div>
-            
-        </div>
+            <main class="main post-page">
+    <article class="article-entry">
+        <h4 id="this-is-new-page"><a href="#this-is-new-page" class="headerlink" title="this is new page"></a>this is new page</h4><p>new page new page</p>
+
     </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href="/2015/12/24/iosjichujiaocai/">
-            
-                <span>iOS基础开发教材</span>
-        </a>
-        <div class="abstract-content">
-            <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>地址: <a href="https://zonble.gitbooks.io/kkbox-ios-dev/content/" target="_blank" rel="noopener">https://zonble.gitbooks.io/kkbox-ios-dev/content/</a></p>
-<h4 id="由下而上的学习-bottom-up"><a href="#由下而上的学习-bottom-up" class="headerlink" title="由下而上的学习(bottom-up):"></a>由下而上的学习(bottom-up):</h4><p>先了解整个开发框架的底层，以及整个框架的基本概念，然后才去一个个去看在这个框架中有哪些 API、以及有哪些第三方 library 可以使用</p>
-<h4 id="学习新知识的时候-学会这样挑战自己-确认自己是否完全理解自己想要学习的东西"><a href="#学习新知识的时候-学会这样挑战自己-确认自己是否完全理解自己想要学习的东西" class="headerlink" title="学习新知识的时候,学会这样挑战自己,确认自己是否完全理解自己想要学习的东西"></a>学习新知识的时候,学会这样挑战自己,确认自己是否完全理解自己想要学习的东西</h4><p>我有没有办法用一句话来描述这个东西是什么?还有,它可以用在哪里?</p>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2015/12/24</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class="abstract-tags">
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="阅读 iOS">阅读 iOS</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href="/2015/12/24/yuedu-iosjinjie/">
-            
-                <span>阅读-iOS进阶</span>
-        </a>
-        <div class="abstract-content">
-            <h3 id="工具介绍"><a href="#工具介绍" class="headerlink" title="工具介绍"></a>工具介绍</h3><h3 id="开发实践"><a href="#开发实践" class="headerlink" title="开发实践"></a>开发实践</h3><h4 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h4><p>现在都是arc,想看非arc情况,给对应编译文件添加编译参数 -fno-objc-arc<br>开启手动管理引用计数模式</p>
-<blockquote>
-<p>为什么需要引用计数</p>
-</blockquote>
-<p>在通常的函数内,通常是使用一个临时的对象,是不需要修改它的引用计数的<br>,只需要在函数返回前将对象销毁就可以了.</p>
-<p>引用计数真正派上用场,是在面向对象的程序设计架构中,用于对象之间传递和共享数据.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">NSObject *obj = [NSObject alloc]init];</span><br><span class="line">[obj release];</span><br><span class="line">//打印 obj的retaincount 会发现还是1 为什么不是0呢?因为马上就要被回收了,改变这个值没什么意义,而且减少一次对内存的操作,加速对象的回收</span><br></pre></td></tr></table></figure>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2015/12/24</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class="abstract-tags">
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="阅读 iOS">阅读 iOS</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href="/2015/02/24/yuedu-nodejs/">
-            
-                <span>阅读-NodeJs.相关</span>
-        </a>
-        <div class="abstract-content">
-            <h3 id="Node-js是什么？"><a href="#Node-js是什么？" class="headerlink" title="Node.js是什么？"></a>Node.js是什么？</h3><p>Node.js，或者 Node，是一个可以让 JavaScript 运行在服务器端的平台。它可以让 JavaScript 脱离浏览器的束缚运行在一般的服务器环境下，就像运行 Python、Perl、PHP、Ruby 程序一样。你可以用 Node.js 轻松地进行服务器端应用开发，Python、Perl、PHP、Ruby 能 做的事情 Node.js 几乎都能做，而且可以做得更好。</p>
-<p>Node.js 是一个为实时Web(Real-time Web)应用开发而诞生的平台，它从诞生之初就充分 考虑了在实时响应、超大规模数据要求下架构的可扩展性。这使得它摒弃了传统平台依靠多线 程来实现高并发的设计思路，而采用了单线程、异步式I/O、事件驱动式的程序设计模型。这些 特性不仅带来了巨大的性能提升，还减少了多线程程序设计的复杂性，进而提高了开发效率。</p>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2015/02/24</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class="abstract-tags">
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="NodeJs">NodeJs</a>
-    
-</div>
-            
-        </div>
-    </article>
+    <!-- license  -->
     
     <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
     
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
 </main>
             <!-- profile -->
             
