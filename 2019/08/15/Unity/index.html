@@ -203,12 +203,23 @@
 </head>
 
     
+        <body class="post-body">
+    
     
 <header class="header">
 
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/">voshk</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name"></a>
+            </div>
+    </div>
     
     <a class="home-link" href="/">voshk</a>
 </header>
@@ -220,24 +231,59 @@
 
 
 
+
+height:50vh;
 ">
     
     <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
             
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
+            
+            [Untitled Post]
+            <!-- 404 -->
             
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
+            
+            <!-- 404 -->
+            
         </p>
         <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/08/15</span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
         
     </div>
 </div>
@@ -338,46 +384,77 @@
 </script>        
         <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
         <div class="container container-unloaded">
-            <main class="main index-page">
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href="/2014/09/28/i-came-from-shandong/">
-            
-                <span>我从山东那地方来</span>
-        </a>
-        <div class="abstract-content">
-            <p>我从山东那地方来</p>
-<p>距今已经一年多</p>
-<p>这一年多</p>
-<p>我认识很多人和他们的朋友</p>
-<p>我们一起聚会</p>
-<p>聊天或者沉默</p>
-<p>楼下月光刚好</p>
-<p>漫步的人三三两两</p>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2014/09/28</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class="abstract-tags">
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags="山东">山东</a>
-    
-</div>
-            
-        </div>
+            <main class="main post-page">
+    <article class="article-entry">
+        <h3 id="Unity3D导出iOS项目编译Framework踩坑之旅"><a href="#Unity3D导出iOS项目编译Framework踩坑之旅" class="headerlink" title="Unity3D导出iOS项目编译Framework踩坑之旅"></a>Unity3D导出iOS项目编译Framework踩坑之旅</h3><p>业务需求需要把Unity3D制作的3D效果与现有native iOS项目结合实现3D效果。</p>
+<h3 id="实现方案"><a href="#实现方案" class="headerlink" title="实现方案"></a>实现方案</h3><h4 id="将Unity3D生成的iOS项目与现有native项目融合"><a href="#将Unity3D生成的iOS项目与现有native项目融合" class="headerlink" title="将Unity3D生成的iOS项目与现有native项目融合"></a>将Unity3D生成的iOS项目与现有native项目融合</h4><p>调研了目前主流都使用这种方式，各种教程也都千篇一律，都是无脑拷贝，一大堆的导这导那，改这改那，然而目前的native项目复杂度比较高，项目也做了好久了，功能比较多，这种做法对现有项目侵入性太高，看着就难受，放弃。</p>
+<h4 id="将Unity3D生成的iOS项目制作Framework"><a href="#将Unity3D生成的iOS项目制作Framework" class="headerlink" title="将Unity3D生成的iOS项目制作Framework"></a>将Unity3D生成的iOS项目制作Framework</h4><p>其实一开始就想用这种方式，只是用Unity导出iOS项目之后，看到里面有.main文件还有.pch等有了退缩，就又想了上面的方案，还好及时回头是岸。</p>
+<p>直观上来讲这种方案优势很明显：非常友好，一次配置，以后Unity项目有更新，只需要更新把Unity生成的文件放到已经配置好的framework项目，重新build下，另外更新下Unity对应的Data即可，省时省力，一些改动对Native项目也没什么感知。</p>
+<h3 id="制作Unity-Framework"><a href="#制作Unity-Framework" class="headerlink" title="制作Unity Framework"></a>制作Unity Framework</h3><p>首先确保Unity导出的iOS项目是可以正常编译的</p>
+<p>制作framework也分两种方式：1.直接新建个framework把Unity导出的iOS项目中的Classes和Libraries、Data文件对应拖入新建的framework project，再进行接下来的配置；2.直接在Unity导出的iOS项目中操作，新建个framwork类型的target，在target基础上进行操作。</p>
+<p>File - new - target - cocoa touch framework - unity framework</p>
+<p><strong>各种设置为了让target可以编译成功</strong></p>
+<p>这部分的配置，网上一搜一大把，简单列举下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Build Settings -&gt; Header Search Paths: $(inherited) &quot;$(SRCROOT)/Classes&quot; &quot;$(SRCROOT)&quot; $(SRCROOT)/Classes/Native $(SRCROOT)/Libraries/bdwgc/include $(SRCROOT)/Libraries/libil2cpp/include</span><br><span class="line">Build Settings -&gt; Library Search Paths: $(inherited) &quot;$(SRCROOT)&quot; &quot;$(SRCROOT)/Libraries&quot;</span><br><span class="line">Build Settings -&gt; Prefix Header: Classes/Prefix.pch</span><br><span class="line">Build Settings -&gt; Mismatched Return Type: Yes</span><br><span class="line">Build Settings -&gt; Enable C++ Exceptions: Yes</span><br><span class="line">Build Settings -&gt; Other Linker Flags: $(inherited) -weak_framework CoreMotion -weak-lSystem</span><br><span class="line">Build Settings -&gt; Mach-O Type: Static Library</span><br><span class="line">Build Settings -&gt; Other C Flags 添加 -DINIT_SCRIPTING_BACKEND=1 -fno-strict-overflow -DRUNTIME_IL2CPP=1</span><br></pre></td></tr></table></figure>
+<p>但是Unity工具更新了，以及Unity和Xcode的版本不同，新版本打包导出的工程不一样了，会出现各种各样的报错。</p>
+<p>以下列举本人在踩坑过程中遇到的报错信息及解决方式：</p>
+<ul>
+<li>出现多处”nomember xxx in xxx”类似的系统线程错误</li>
+</ul>
+<p>顺着报错的点一路追踪到cpp代码，发现共同点都是在一个判断.net 4.0版本的宏定义，联想到c flag的设置可以设置多种参数是不是有.net相关的？</p>
+<p>这是因为.net升级为4.0版本，导致的。</p>
+<p>打开项目build setting 搜索 other C flags 看看是不是少加了这个 -DNET_4_0 </p>
+<p>问题解决。</p>
+<ul>
+<li>“Please include Preprocessor.h before other includes”</li>
+</ul>
+<p>提示Preprocessor.h的定义应该在最前面，但是明明已经是最前面了，不明所以，直接注释掉这三行代码，问题解决。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// &quot;Please include Preprocessor.h before other includes&quot;</span><br><span class="line"></span><br><span class="line">#if defined(CABASE_H)</span><br><span class="line">#error &quot;Please include Preprocessor.h before other includes&quot;</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">直接把这三行代码注释掉啊</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>Undefined symbols for architecture armv7:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> Undefined symbols for architecture armv7:</span><br><span class="line">  &quot;_OBJC_CLASS_$_AVPlayerViewController&quot;, referenced from:</span><br><span class="line">      objc-class-ref in UnityFramework(FullScreenVideoPlayer.o)</span><br><span class="line">ld: symbol(s) not found for architecture armv7</span><br><span class="line">clang: error: linker command failed with exit code 1 (use -v to see invocation)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>targets - build phase - Link Binary 添加AVKit.framework 问题解决。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>Unity这东西坑还是很多的，网上很多的资料都是Unity以及Xcode比较老的版本，之前可以成功实现的方案，在目前来看可能会有各种各样莫名奇怪的问题，针对每个报错的点，耐心去查找相关资料，总是会解决的。</p>
+<p>我用的Unity版本目前是最新的2019.2.1(Unity 2019.2.1f1) Xcode对应版本为10.3。</p>
+<h3 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h3><ol>
+<li>把各种繁琐的配置形成脚本，自动化去处理</li>
+<li>接下来会进行oc与unity互调交互的研究</li>
+</ol>
+<p>大家在实现过程如果有什么问题可以评论提出来，我们集思广益，共同去解决。</p>
+
     </article>
+    <!-- license  -->
     
     <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/2017/03/08/show-respect-to-who-changed-himself/" title="向默默改变自己的人致敬">
+                    <div class="prevTitle">向默默改变自己的人致敬</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
     
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
 </main>
             <!-- profile -->
             
@@ -1145,6 +1222,8 @@ jsonContent:
     
     </div>
     <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
      
     </body>
 </html>
